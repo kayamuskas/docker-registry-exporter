@@ -7,13 +7,12 @@ import (
     "os"
     "net/http"
     "path/filepath"
-    "github.com/kayamuskas/docker-registry-exporter"
     "github.com/prometheus/client_golang/prometheus"
     "github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 const defaultAddr = ":8080"
-
+var metricValue float64
 
 // home logs the received request and returns a simple response.
 func home(w http.ResponseWriter, r *http.Request) {
@@ -38,9 +37,14 @@ func DirSize(path string) (int64, error){
 
 }
 
+//First run to get initial values
+func init() {
+    fmt.Println(DirSize("/Users/kayama/Downloads"))
+}
+
 func main() {
 
-    //Create a new instance of the foocollector and 
+    //Create a new instance of the collector and 
     //register it with the prometheus client.
     run := NewFilesystemCollector()
     prometheus.MustRegister(run)
@@ -54,8 +58,12 @@ func main() {
                 fmt.Println("Tick at", t)
                 //metricValue := fmt.Println(DirSize("/Users/kayama/Downloads"))
                 fmt.Println(DirSize("/Users/kayama/Downloads"))
-                metricValue := 100.1
-                fmt.Println(MetricValue)
+                var mmm int64 = 1001
+                var zzz float64 = float64(mmm) + 0.001
+                fmt.Println(zzz)
+                
+                metricValue = 100.1
+                fmt.Println(metricValue)
             }
         }
     }()

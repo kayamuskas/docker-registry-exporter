@@ -1,7 +1,6 @@
 package main
 
 import (
-    "fmt"
     "github.com/prometheus/client_golang/prometheus"
 )
 
@@ -14,7 +13,7 @@ type filesystemCollector struct {
 func NewFilesystemCollector() *filesystemCollector {
     return &filesystemCollector{
 	sizeMetric: prometheus.NewDesc("disk_size_usage",
-	    "Show how much docker-regestry takes disk usage",
+	    "Show how much docker-registry takes disk usage",
 	    nil, nil,
 	),
     }
@@ -29,10 +28,9 @@ func (collector *filesystemCollector) Collect(ch chan<- prometheus.Metric) {
 
     //Implement logic here to determine proper metric value to return to prometheus
     //for each descriptor or call other functions that do so.
-    //metricValue := 100.1
-    fmt.Println(MetricValue + 1)
+    //metricValue :=
 
     //Write latest value for each metric in the prometheus metric channel.
-    ch <- prometheus.MustNewConstMetric(collector.sizeMetric, prometheus.GaugeValue, metricValue)
+    ch <- prometheus.MustNewConstMetric(collector.sizeMetric, prometheus.GaugeValue, metricValue + 100)
 
 }
