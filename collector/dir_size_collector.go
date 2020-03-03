@@ -50,18 +50,16 @@ func (c *dirSizeCol) Stop() {
 
 // PROMETHEUS API
 func (c *dirSizeCol) Describe(ch chan<- *prometheus.Desc) {
-	// describe metric
 	ch <- c.desc
 }
 
 func (c *dirSizeCol) Collect(ch chan<- prometheus.Metric) {
-
-	//Implement logic here to determine proper metric value to return to prometheus
-	//for each descriptor or call other functions that do so.
-	//metricValue :=
-
-	//Write latest value for each metric in the prometheus metric channel.
-	ch <- prometheus.MustNewConstMetric(c.desc, prometheus.GaugeValue, c.value + 100)
+	select {
+	case <-c.doneCh:
+		return
+	case value := <-c.readCh:
+		ch <- prometheus.MustNewConstMetric(c.desc, prometheus.GaugeValue, float64(value + 100))
+	}
 }
 
 func (c *dirSizeCol) worker() {
